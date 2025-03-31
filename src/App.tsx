@@ -1,5 +1,5 @@
 import "./App.css";
-import { Column, Content, Grid } from "@carbon/react";
+import { Column, Content, Grid, ProgressBar } from "@carbon/react";
 import { AppHeader } from "./components/AppHeader";
 
 function App() {
@@ -7,18 +7,38 @@ function App() {
     <>
       <AppHeader />
       <Content>
-        <Grid>
-          <Column md={4} lg={4}>
-            Colum is 4
+        <Grid as="div">
+          <Column sm={4}>
+            <ProgressBar
+              helperText="200/1000"
+              label="Progress bar label"
+              max={1000}
+              value={200}
+            />
           </Column>
-          <Column md={4} lg={4}>
-            Colum is 4
+          <Column sm={4}>
+            <ProgressBar
+              helperText="200/1000"
+              label="Progress bar label"
+              max={1000}
+              value={200}
+            />
           </Column>
-          <Column md={4} lg={4}>
-            Colum is 4
+          <Column sm={4}>
+            <ProgressBar
+              helperText="200/1000"
+              label="Progress bar label"
+              max={1000}
+              value={200}
+            />
           </Column>
-          <Column md={4} lg={4}>
-            Colum is 4
+          <Column sm={4}>
+            <ProgressBar
+              helperText="200/1000"
+              label="Progress bar label"
+              max={1000}
+              value={200}
+            />
           </Column>
         </Grid>
       </Content>

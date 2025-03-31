@@ -12,24 +12,29 @@ import {
   SideNavItems
 } from "@carbon/react";
 import { PaintBrush } from "@carbon/react/icons";
+import { useLocation } from "react-router";
 
 export const AppHeader = () => {
+  const location = useLocation();
+
   return (
     <HeaderContainer
       render={({ isSideNavExpanded, onClickSideNavExpand }) => (
         <>
-          <Header aria-label="IBM Platform Name">
+          <Header aria-label="FinPlin App">
             <HeaderMenuButton
               aria-label={isSideNavExpanded ? "Close menu" : "Open menu"}
               onClick={onClickSideNavExpand}
               isActive={isSideNavExpanded}
               aria-expanded={isSideNavExpanded}
             />
-            <HeaderName href="#" prefix="IBM">
-              [Platform]
+            <HeaderName href="#" prefix="">
+              FinPlin
             </HeaderName>
-            <HeaderNavigation aria-label="IBM [Platform]">
-              <HeaderMenuItem href="#">Home</HeaderMenuItem>
+            <HeaderNavigation aria-label="FinPlin Navigation">
+              <HeaderMenuItem href="/" isActive={location.pathname === "/"}>
+                Home
+              </HeaderMenuItem>
               <HeaderMenuItem href="#">Set Budget</HeaderMenuItem>
             </HeaderNavigation>
             <HeaderGlobalBar>
@@ -46,11 +51,14 @@ export const AppHeader = () => {
               onSideNavBlur={onClickSideNavExpand}
               href="#main-content"
               isPersistent={false}
+              onOverlayClick={onClickSideNavExpand}
             >
               <SideNavItems>
-                <HeaderSideNavItems hasDivider={true}>
-                  <HeaderMenuItem href="#">Home</HeaderMenuItem>
-                  <HeaderMenuItem href="#">Set Budget</HeaderMenuItem>
+                <HeaderSideNavItems>
+                  <HeaderMenuItem href="/" isActive={location.pathname === "/"}>
+                    Home
+                  </HeaderMenuItem>
+                  <HeaderMenuItem href="/set-budget">Set Budget</HeaderMenuItem>
                 </HeaderSideNavItems>
               </SideNavItems>
             </SideNav>
