@@ -35,11 +35,12 @@ export const AppHeader = () => {
               <HeaderMenuItem href="/" isActive={location.pathname === "/"}>
                 Home
               </HeaderMenuItem>
-              <HeaderMenuItem href="#">Set Budget</HeaderMenuItem>
+              <HeaderMenuItem href="#">Budget</HeaderMenuItem>
+              <HeaderMenuItem href="#">Categories</HeaderMenuItem>
             </HeaderNavigation>
             <HeaderGlobalBar>
               <HeaderGlobalAction
-                aria-label="Search"
+                aria-label="Theme"
                 // onClick={action("search click")}
               >
                 <PaintBrush size={20} />
@@ -58,7 +59,13 @@ export const AppHeader = () => {
                   <HeaderMenuItem href="/" isActive={location.pathname === "/"}>
                     Home
                   </HeaderMenuItem>
-                  <HeaderMenuItem href="/set-budget">Set Budget</HeaderMenuItem>
+                  <HeaderMenuItem href="/set-budget">Budget</HeaderMenuItem>
+                  <HeaderMenuItem
+                    href="/categories"
+                    isActive={location.pathname === "/categories"}
+                  >
+                    Categories
+                  </HeaderMenuItem>
                 </HeaderSideNavItems>
               </SideNavItems>
             </SideNav>
