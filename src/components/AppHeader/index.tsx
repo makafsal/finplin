@@ -28,15 +28,25 @@ export const AppHeader = () => {
               isActive={isSideNavExpanded}
               aria-expanded={isSideNavExpanded}
             />
-            <HeaderName href="#" prefix="">
+            <HeaderName href="/" prefix="">
               FinPlin
             </HeaderName>
             <HeaderNavigation aria-label="FinPlin Navigation">
               <HeaderMenuItem href="/" isActive={location.pathname === "/"}>
                 Home
               </HeaderMenuItem>
-              <HeaderMenuItem href="#">Budget</HeaderMenuItem>
-              <HeaderMenuItem href="#">Categories</HeaderMenuItem>
+              <HeaderMenuItem
+                href="/budget"
+                isActive={location.pathname === "/budget"}
+              >
+                Budget Allocation
+              </HeaderMenuItem>
+              <HeaderMenuItem
+                href="/categories"
+                isActive={location.pathname === "/categories"}
+              >
+                Categories
+              </HeaderMenuItem>
             </HeaderNavigation>
             <HeaderGlobalBar>
               <HeaderGlobalAction
@@ -59,7 +69,12 @@ export const AppHeader = () => {
                   <HeaderMenuItem href="/" isActive={location.pathname === "/"}>
                     Home
                   </HeaderMenuItem>
-                  <HeaderMenuItem href="/set-budget">Budget</HeaderMenuItem>
+                  <HeaderMenuItem
+                    href="/budget"
+                    isActive={location.pathname === "/budget"}
+                  >
+                    Budget Allocation
+                  </HeaderMenuItem>
                   <HeaderMenuItem
                     href="/categories"
                     isActive={location.pathname === "/categories"}

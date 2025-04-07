@@ -78,7 +78,7 @@ export const Categories = () => {
             Add new
           </Button>
         </TableToolbarContent>
-        <Table aria-label="sample table">
+        <Table aria-label="Categories table">
           <TableHead>
             <TableRow>
               <TableHeader>#</TableHeader>

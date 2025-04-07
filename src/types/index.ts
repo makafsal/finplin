@@ -5,9 +5,9 @@ export interface Category {
 
 export interface Budget {
   id: number;
-  categoryId: number;
-  amount: number;
-  maxAmount: number;
+  categoryId?: number;
+  amount?: number;
+  maxAmount?: number;
   date?: Date;
 }
 
