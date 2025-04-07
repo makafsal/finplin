@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import {
+  Button,
   Column,
   Content,
   Dropdown,
@@ -7,7 +8,7 @@ import {
   IconButton,
   TextInput
 } from "@carbon/react";
-import { Checkmark, Close } from "@carbon/react/icons";
+import { Checkmark, Close, TrashCan } from "@carbon/react/icons";
 import { Budget, Category } from "../../types";
 import { db } from "../../db";
 
@@ -174,6 +175,12 @@ export const BudgetAllocation = () => {
     fetchData();
   };
 
+  const deleteBudget = (budgetId: number) => {
+    db.budgets.delete(budgetId);
+
+    fetchData();
+  };
+
   return (
     <Content>
       <h4>Budget Allocation</h4>
@@ -266,6 +273,16 @@ export const BudgetAllocation = () => {
                       >
                         <Close />
                       </IconButton>
+                      <Button
+                        renderIcon={TrashCan}
+                        kind="danger"
+                        size="sm"
+                        hasIconOnly
+                        onClick={() => deleteBudget(budget.id)}
+                        iconDescription="Delete"
+                        tooltipAlignment="center"
+                        tooltipPosition="bottom"
+                      />
                     </>
                   )}
                 </Column>
