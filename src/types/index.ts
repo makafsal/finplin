@@ -18,3 +18,8 @@ export interface CategoryModalProps {
   onUpdate?: (item: Category) => void;
   category?: Category;
 }
+
+export interface DropdownItem {
+  text: string;
+  value: number;
+}

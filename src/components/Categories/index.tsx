@@ -10,7 +10,7 @@ import {
   TableRow,
   TableToolbarContent
 } from "@carbon/react";
-import { Edit, TrashCan } from "@carbon/react/icons";
+import { Add, Edit, TrashCan } from "@carbon/react/icons";
 import { useEffect, useState } from "react";
 import { db } from "../../db";
 import { Category } from "../../types";
@@ -71,7 +71,7 @@ export const Categories = () => {
         <h4>Categories</h4>
         <TableToolbarContent>
           <Button
-            // tabIndex={batchActionProps.shouldShowBatchActions ? -1 : 0}
+            renderIcon={Add}
             onClick={() => setOpen(true)}
             kind="primary"
           >

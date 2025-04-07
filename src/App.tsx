@@ -1,15 +1,30 @@
 import "./App.scss";
-import { Button, Column, Content, FlexGrid, Grid, ProgressBar, Section } from "@carbon/react";
+import {
+  Button,
+  Column,
+  Content,
+  Dropdown,
+  Grid,
+  ProgressBar,
+  Section
+} from "@carbon/react";
 import { Add } from "@carbon/react/icons";
 import { useEffect, useState } from "react";
 import { db } from "./db";
 import { CategoryModal } from "./components/CategoryModal";
-import { Budget, Category } from "./types";
+import { Budget, Category, DropdownItem } from "./types";
+import { months, years } from "./constants";
 
 function App() {
   const [open, setOpen] = useState(false);
   const [budgets, setBudgets] = useState<Budget[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
+  const [selectedMonth, setSelectedMonth] = useState<DropdownItem | null>(
+    months[new Date().getMonth()]
+  );
+  const [selectedYear, setSelectedYear] = useState<
+    DropdownItem | undefined | null
+  >(years.find((year) => year?.value === new Date().getFullYear()));
 
   const addCategory = (categoryName: string) => {
     db.categories.add({ name: categoryName });
@@ -64,7 +79,31 @@ function App() {
       />
 
       <Content>
-        <FlexGrid>
+        <Grid narrow>
+          <Column lg={8} md={4} sm={2}>
+            <Dropdown
+              id="month"
+              titleText="Month"
+              label="Select month"
+              items={months}
+              itemToString={(item) => (item ? item.text : "")}
+              selectedItem={selectedMonth}
+              onChange={({ selectedItem }) => setSelectedMonth(selectedItem)}
+            />
+          </Column>
+          <Column lg={8} md={4} sm={2}>
+            <Dropdown
+              id="year"
+              titleText="Year"
+              label="Select year"
+              items={years}
+              itemToString={(item) => (item ? item.text : "")}
+              selectedItem={selectedYear}
+              onChange={({ selectedItem }) => setSelectedYear(selectedItem)}
+            />
+          </Column>
+        </Grid>
+        <Grid className="mt-5" narrow>
           {budgets?.length === 0 ? (
             <Column sm={4}>No budget allocated for this month.</Column>
           ) : (
@@ -79,8 +118,8 @@ function App() {
               </Column>
             ))
           )}
-        </FlexGrid>
-        <Section className='mt-5'>
+        </Grid>
+        <Section className="mt-5">
           <Button renderIcon={Add} kind="primary">
             Add Expense
           </Button>

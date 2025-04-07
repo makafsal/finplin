@@ -9,72 +9,9 @@ import {
   TextInput
 } from "@carbon/react";
 import { Checkmark, Close, TrashCan } from "@carbon/react/icons";
-import { Budget, Category } from "../../types";
+import { Budget, Category, DropdownItem } from "../../types";
 import { db } from "../../db";
-
-interface DropdownItem {
-  text: string;
-  value: number;
-}
-
-const months: DropdownItem[] = [
-  {
-    text: "January",
-    value: 0
-  },
-  {
-    text: "February",
-    value: 1
-  },
-  {
-    text: "March",
-    value: 2
-  },
-  {
-    text: "April",
-    value: 3
-  },
-  {
-    text: "May",
-    value: 4
-  },
-  {
-    text: "June",
-    value: 5
-  },
-  {
-    text: "July",
-    value: 6
-  },
-  {
-    text: "August",
-    value: 7
-  },
-  {
-    text: "September",
-    value: 8
-  },
-  {
-    text: "October",
-    value: 9
-  },
-  {
-    text: "November",
-    value: 10
-  },
-  {
-    text: "December",
-    value: 11
-  }
-];
-
-const years: DropdownItem[] = Array.from(
-  { length: 2200 - 2025 + 1 },
-  (_, i) => ({
-    text: `${2025 + i}`,
-    value: 2025 + i
-  })
-);
+import { months, years } from "../../constants";
 
 export const BudgetAllocation = () => {
   const inputsMap = new Map();
@@ -94,50 +31,41 @@ export const BudgetAllocation = () => {
   const [maxAmount, setMaxAmount] = useState<number>();
   const [isDirty, setIsDirty] = useState<boolean>(false);
 
-  // const fetchCategories = async () => {
-  //   try {
-  //     const items: Category[] = await db.categories.toArray();
-
-  //     setCategories(items);
-  //   } catch (error) {
-  //     setCategories([]);
-  //   }
-  // };
-
-  // const fetchBudgets = async () => {
-  //   try {
-  //     const items: Budget[] = await db.budgets.toArray();
-
-  //     setBudgets(items);
-  //   } catch (error) {
-  //     setBudgets([]);
-  //   }
-  // };
-
-  const fetchData = async () => {
+  const fetchData = async (
+    _selectedMonth = selectedMonth,
+    _selectedYear = selectedYear
+  ) => {
+    console.log(_selectedMonth?.value, _selectedYear?.value);
     try {
-      const _categories: Category[] = await db.categories.toArray();
-      const _budgets: Budget[] = await db.budgets.toArray();
+      if (_selectedMonth && _selectedYear) {
+        const _categories: Category[] = await db.categories.toArray();
+        const _budgets: Budget[] = await db.budgets.toArray();
+        const filteredBudgets = _budgets.filter(
+          (item: Budget) =>
+            item.date?.getFullYear() === _selectedYear?.value &&
+            item.date?.getMonth() === _selectedMonth?.value
+        );
 
-      setAllCategories([..._categories]);
+        setAllCategories([..._categories]);
 
-      if (_budgets.length > 0) {
-        _budgets.forEach((budget) => {
-          const existIndex = _categories?.findIndex(
-            (category) => category.id === budget.categoryId
-          );
+        if (_budgets.length > 0) {
+          _budgets.forEach((budget) => {
+            const existIndex = _categories?.findIndex(
+              (category) => category.id === budget.categoryId
+            );
 
-          if (existIndex !== -1) {
-            _categories.splice(existIndex, 1);
-          }
-        });
+            if (existIndex !== -1) {
+              _categories.splice(existIndex, 1);
+            }
+          });
 
-        setCategories(_categories);
-      } else {
-        setCategories(_categories);
+          setCategories(_categories);
+        } else {
+          setCategories(_categories);
+        }
+
+        setBudgets(filteredBudgets);
       }
-
-      setBudgets(_budgets);
     } catch (error) {
       setCategories([]);
     }
@@ -193,7 +121,10 @@ export const BudgetAllocation = () => {
             items={months}
             itemToString={(item) => (item ? item.text : "")}
             selectedItem={selectedMonth}
-            onChange={({ selectedItem }) => setSelectedMonth(selectedItem)}
+            onChange={({ selectedItem }) => {
+              setSelectedMonth(selectedItem);
+              fetchData(selectedItem);
+            }}
           />
         </Column>
         <Column lg={8} md={4} sm={2}>
@@ -204,7 +135,10 @@ export const BudgetAllocation = () => {
             items={years}
             itemToString={(item) => (item ? item.text : "")}
             selectedItem={selectedYear}
-            onChange={({ selectedItem }) => setSelectedYear(selectedItem)}
+            onChange={({ selectedItem }) => {
+              setSelectedYear(selectedItem);
+              fetchData(selectedMonth, selectedItem);
+            }}
           />
         </Column>
       </Grid>
