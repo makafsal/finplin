@@ -8,7 +8,7 @@ import {
   IconButton,
   TextInput
 } from "@carbon/react";
-import { Checkmark, Close, TrashCan } from "@carbon/react/icons";
+import { Checkmark, Close, Copy, TrashCan } from "@carbon/react/icons";
 import { Budget, Category, DropdownItem } from "../../types";
 import { db } from "../../db";
 import { months, years } from "../../constants";
@@ -35,7 +35,6 @@ export const BudgetAllocation = () => {
     _selectedMonth = selectedMonth,
     _selectedYear = selectedYear
   ) => {
-    console.log(_selectedMonth?.value, _selectedYear?.value);
     try {
       if (_selectedMonth && _selectedYear) {
         const _categories: Category[] = await db.categories.toArray();
@@ -46,6 +45,7 @@ export const BudgetAllocation = () => {
             item.date?.getMonth() === _selectedMonth?.value
         );
 
+        setBudgets(filteredBudgets);
         setAllCategories([..._categories]);
 
         if (_budgets.length > 0) {
@@ -63,8 +63,6 @@ export const BudgetAllocation = () => {
         } else {
           setCategories(_categories);
         }
-
-        setBudgets(filteredBudgets);
       }
     } catch (error) {
       setCategories([]);
@@ -97,16 +95,49 @@ export const BudgetAllocation = () => {
     }
   };
 
-  const onUpdateBudget = (budgetId: number) => {
+  const onUpdateBudget = (budgetId?: number) => {
     db.budgets.update(budgetId, { maxAmount: maxAmount });
 
     fetchData();
   };
 
-  const deleteBudget = (budgetId: number) => {
+  const deleteBudget = (budgetId?: number) => {
     db.budgets.delete(budgetId);
 
     fetchData();
+  };
+
+  const onCopyPreviousBudget = async () => {
+    if (
+      selectedYear?.value !== undefined &&
+      selectedMonth?.value !== undefined
+    ) {
+      let _date = new Date(selectedYear?.value, selectedMonth?.value - 1, 1);
+
+      if (selectedMonth?.text === "January") {
+        _date = new Date(selectedYear?.value - 1, 11, 1);
+      }
+
+      const _budgets: Budget[] = await db.budgets.toArray();
+
+      const sourceMonthBudgets = _budgets.filter(
+        (item: Budget) =>
+          item.date?.getFullYear() === _date?.getFullYear() &&
+          item.date?.getMonth() === _date?.getMonth()
+      );
+      const targetMonthBudgets: Budget[] = sourceMonthBudgets.map(
+        (item: Budget) => ({
+          amount: 0,
+          maxAmount: item.maxAmount,
+          categoryId: item.categoryId,
+          date: new Date(selectedYear.value, selectedMonth.value, 1)
+        })
+      );
+
+      db.budgets.bulkAdd(targetMonthBudgets);
+
+      fetchData();
+    }
   };
 
   return (
@@ -189,7 +220,7 @@ export const BudgetAllocation = () => {
                           !isDirty ||
                           (isDirty && budget.maxAmount === maxAmount)
                         }
-                        onClick={() => onUpdateBudget(budget.id)}
+                        onClick={() => onUpdateBudget(budget?.id)}
                       >
                         <Checkmark />
                       </IconButton>
@@ -212,7 +243,7 @@ export const BudgetAllocation = () => {
                         kind="danger"
                         size="sm"
                         hasIconOnly
-                        onClick={() => deleteBudget(budget.id)}
+                        onClick={() => deleteBudget(budget?.id)}
                         iconDescription="Delete"
                         tooltipAlignment="center"
                         tooltipPosition="bottom"
@@ -277,6 +308,19 @@ export const BudgetAllocation = () => {
           )}
         </Column>
       </Grid>
+      {budgets?.length === 0 && (
+        <Grid className="mt-5" narrow>
+          <Column lg={8} md={4} sm={2}>
+            <Button
+              kind="primary"
+              renderIcon={Copy}
+              onClick={() => onCopyPreviousBudget()}
+            >
+              Copy from previous month
+            </Button>
+          </Column>
+        </Grid>
+      )}
     </Content>
   );
 };

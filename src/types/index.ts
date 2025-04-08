@@ -4,7 +4,7 @@ export interface Category {
 }
 
 export interface Budget {
-  id: number;
+  id?: number;
   categoryId?: number;
   amount?: number;
   maxAmount?: number;

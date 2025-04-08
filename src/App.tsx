@@ -31,28 +31,23 @@ function App() {
     setOpen(false);
   };
 
-  const fetchData = async () => {
+  const fetchData = async (
+    _selectedMonth = selectedMonth,
+    _selectedYear = selectedYear
+  ) => {
     try {
-      const _categories: Category[] = await db.categories.toArray();
-      const _budgets: Budget[] = await db.budgets.toArray();
+      if (_selectedMonth && _selectedYear) {
+        const _categories: Category[] = await db.categories.toArray();
+        const _budgets: Budget[] = await db.budgets.toArray();
+        const filteredBudgets = _budgets.filter(
+          (item: Budget) =>
+            item.date?.getFullYear() === _selectedYear?.value &&
+            item.date?.getMonth() === _selectedMonth?.value
+        );
 
-      // if (_budgets.length > 0) {
-      //   _budgets.forEach((budget) => {
-      //     const existIndex = _categories?.findIndex(
-      //       (category) => category.id === budget.categoryId
-      //     );
-
-      //     if (existIndex !== -1) {
-      //       _categories.splice(existIndex, 1);
-      //     }
-      //   });
-
-      //   setCategories(_categories);
-      // } else {
-      setCategories(_categories);
-      // }
-
-      setBudgets(_budgets);
+        setBudgets(filteredBudgets);
+        setCategories(_categories);
+      }
     } catch (error) {
       setCategories([]);
     }
@@ -88,7 +83,10 @@ function App() {
               items={months}
               itemToString={(item) => (item ? item.text : "")}
               selectedItem={selectedMonth}
-              onChange={({ selectedItem }) => setSelectedMonth(selectedItem)}
+              onChange={({ selectedItem }) => {
+                setSelectedMonth(selectedItem);
+                fetchData(selectedItem);
+              }}
             />
           </Column>
           <Column lg={8} md={4} sm={2}>
@@ -99,7 +97,10 @@ function App() {
               items={years}
               itemToString={(item) => (item ? item.text : "")}
               selectedItem={selectedYear}
-              onChange={({ selectedItem }) => setSelectedYear(selectedItem)}
+              onChange={({ selectedItem }) => {
+                setSelectedYear(selectedItem);
+                fetchData(selectedMonth, selectedItem);
+              }}
             />
           </Column>
         </Grid>
