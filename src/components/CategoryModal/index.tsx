@@ -21,17 +21,17 @@ export const CategoryModal = ({
   );
 
   useEffect(() => {
-    if (category?.name) {
-      setCategoryName(category.name);
+    if (category?.name?.trim()?.length) {
+      setCategoryName(category.name?.trim());
     }
   }, [category]);
 
   const onSubmit = () => {
-    if (category?.id) {
+    if (category?.id && category?.name?.trim()?.length) {
       setCategoryName("");
       onUpdate?.({
         id: category.id,
-        name: categoryName
+        name: categoryName?.trim()
       });
     } else {
       onAdd?.(categoryName);
@@ -52,7 +52,7 @@ export const CategoryModal = ({
             marginBottom: "1rem"
           }}
           value={categoryName}
-          onChange={(ev) => setCategoryName(ev.target.value?.trim())}
+          onChange={(ev) => setCategoryName(ev.target.value)}
         />
       </ModalBody>
       <ModalFooter>
@@ -68,7 +68,7 @@ export const CategoryModal = ({
         <Button
           kind="primary"
           onClick={() => onSubmit()}
-          disabled={!categoryName?.length}
+          disabled={!categoryName?.trim()?.length}
         >
           {category?.id ? "Update" : "Add"}
         </Button>
