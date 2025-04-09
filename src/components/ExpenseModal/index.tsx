@@ -41,22 +41,20 @@ export const ExpenseModal = ({
     setCategoryItems(_items);
   }, [budgets, open]);
 
-  const onSubmit = () => {
-    if (selectedBudget?.amount !== undefined) {
-      db.budgets.update(selectedBudget?.id, {
-        amount: selectedBudget?.amount + Number(amount)
-      });
+  const onSubmit = async () => {
+    await db.budgets.update(selectedBudget?.id, {
+      amount: (selectedBudget?.amount || 0) + Number(amount)
+    });
 
-      setSelectedBudget(undefined);
-      setCategoryItem(null);
-      setAmount("");
-      onSave?.();
-    }
+    setSelectedBudget(undefined);
+    setCategoryItem(null);
+    setAmount("");
+    onSave?.();
   };
 
   return (
     <ComposedModal open={open} onClose={() => onCancel?.()}>
-      <ModalHeader buttonOnClick={() => onCancel?.()} title="Add a category" />
+      <ModalHeader buttonOnClick={() => onCancel?.()} title="Add a expense" />
       <ModalBody>
         <Dropdown
           id="category"
@@ -68,11 +66,11 @@ export const ExpenseModal = ({
           onChange={({ selectedItem }) => {
             setCategoryItem(selectedItem);
 
-            const budget = budgets?.find(
+            const _budget = budgets?.find(
               (budget) => budget?.categoryId === selectedItem?.value
             );
 
-            setSelectedBudget(budget);
+            setSelectedBudget(_budget);
           }}
         />
         <TextInput
