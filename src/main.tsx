@@ -12,7 +12,7 @@ import { Theme } from "@carbon/react";
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <BrowserRouter>
-      <Theme theme="g100" style={{ height: "100vh" }}>
+      <Theme theme="g100" style={{ height: "100vh", overflow: "auto" }}>
         <AppHeader />
         <Routes>
           <Route path="/" element={<App />} />
