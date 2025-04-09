@@ -52,7 +52,7 @@ export const CategoryModal = ({
             marginBottom: "1rem"
           }}
           value={categoryName}
-          onChange={(ev) => setCategoryName(ev.target.value)}
+          onChange={(ev) => setCategoryName(ev.target.value?.trim())}
         />
       </ModalBody>
       <ModalFooter>
@@ -68,7 +68,7 @@ export const CategoryModal = ({
         <Button
           kind="primary"
           onClick={() => onSubmit()}
-          disabled={!categoryName?.trim()?.length}
+          disabled={!categoryName?.length}
         >
           {category?.id ? "Update" : "Add"}
         </Button>
