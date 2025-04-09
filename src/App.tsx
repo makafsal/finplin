@@ -107,10 +107,14 @@ function App() {
               Add Expense
             </Button>
           </Column>
-          <Column sm={2} className="align-content-center">
-            <h4 style={{
-              color: totalExpense > totalBudget ? 'red' : 'inherit'
-            }}>₹{totalExpense} / ₹{totalBudget}</h4>
+          <Column sm={2} className="align-content-center text-align-right">
+            <h4
+              style={{
+                color: totalExpense > totalBudget ? "red" : "inherit"
+              }}
+            >
+              ₹{totalExpense} / ₹{totalBudget}
+            </h4>
           </Column>
           <Column lg={8} md={4} sm={2} className="mt-5">
             <Dropdown
