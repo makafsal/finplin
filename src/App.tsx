@@ -24,11 +24,8 @@ function App() {
   const [selectedYear, setSelectedYear] = useState<
     DropdownItem | undefined | null
   >(years.find((year) => year?.value === new Date().getFullYear()));
-
-  // const addCategory = (categoryName: string) => {
-  //   db.categories.add({ name: categoryName });
-  //   setOpen(false);
-  // };
+  const [totalExpense, setTotalExpense] = useState<number>(0);
+  const [totalBudget, setTotalBudget] = useState<number>(0);
 
   const fetchData = async (
     _selectedMonth = selectedMonth,
@@ -44,6 +41,16 @@ function App() {
             item.date?.getMonth() === _selectedMonth?.value
         );
 
+        let _totalAmount = 0;
+        let _totalMaxAmount = 0;
+
+        filteredBudgets.forEach((_budget) => {
+          _totalAmount += _budget.amount ?? 0;
+          _totalMaxAmount += _budget.maxAmount ?? 0;
+        });
+
+        setTotalBudget(_totalMaxAmount);
+        setTotalExpense(_totalAmount);
         setBudgets(filteredBudgets);
         setCategories(_categories);
       }
@@ -91,7 +98,7 @@ function App() {
 
       <Content>
         <Grid narrow>
-          <Column sm={4}>
+          <Column sm={2}>
             <Button
               renderIcon={Add}
               kind="primary"
@@ -99,6 +106,11 @@ function App() {
             >
               Add Expense
             </Button>
+          </Column>
+          <Column sm={2} className="align-content-center">
+            <h3 style={{
+              color: totalExpense > totalBudget ? 'red' : 'inherit'
+            }}>₹{totalExpense} / ₹{totalBudget}</h3>
           </Column>
           <Column lg={8} md={4} sm={2} className="mt-5">
             <Dropdown
@@ -134,7 +146,7 @@ function App() {
             <Column sm={4}>No budget allocated for this month.</Column>
           ) : (
             budgets?.map((budget) => (
-              <Column sm={4}>
+              <Column sm={4} className="mt-5">
                 <ProgressBar
                   helperText={`${budget.amount || 0}/${budget.maxAmount}`}
                   label={getCategory(budget?.categoryId)}
