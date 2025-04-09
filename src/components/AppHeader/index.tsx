@@ -1,8 +1,6 @@
 import {
   Header,
   HeaderContainer,
-  HeaderGlobalAction,
-  HeaderGlobalBar,
   HeaderMenuButton,
   HeaderMenuItem,
   HeaderName,
@@ -11,7 +9,6 @@ import {
   SideNav,
   SideNavItems
 } from "@carbon/react";
-import { PaintBrush } from "@carbon/react/icons";
 import { useLocation } from "react-router";
 
 export const AppHeader = () => {
@@ -48,14 +45,6 @@ export const AppHeader = () => {
                 Categories
               </HeaderMenuItem>
             </HeaderNavigation>
-            <HeaderGlobalBar>
-              <HeaderGlobalAction
-                aria-label="Theme"
-                // onClick={action("search click")}
-              >
-                <PaintBrush size={20} />
-              </HeaderGlobalAction>
-            </HeaderGlobalBar>
             <SideNav
               aria-label="Side navigation"
               expanded={isSideNavExpanded}
