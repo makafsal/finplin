@@ -5,15 +5,14 @@ import {
   Content,
   Dropdown,
   Grid,
-  ProgressBar,
-  Section
+  ProgressBar
 } from "@carbon/react";
 import { Add } from "@carbon/react/icons";
 import { useEffect, useState } from "react";
 import { db } from "./db";
-import { CategoryModal } from "./components/CategoryModal";
-import { Budget, Category, DropdownItem } from "./types";
+import { Budget, Category, DropdownItem, Status } from "./types";
 import { months, years } from "./constants";
+import { ExpenseModal } from "./components/ExpenseModal";
 
 function App() {
   const [open, setOpen] = useState(false);
@@ -26,10 +25,10 @@ function App() {
     DropdownItem | undefined | null
   >(years.find((year) => year?.value === new Date().getFullYear()));
 
-  const addCategory = (categoryName: string) => {
-    db.categories.add({ name: categoryName });
-    setOpen(false);
-  };
+  // const addCategory = (categoryName: string) => {
+  //   db.categories.add({ name: categoryName });
+  //   setOpen(false);
+  // };
 
   const fetchData = async (
     _selectedMonth = selectedMonth,
@@ -65,17 +64,43 @@ function App() {
     return category?.name || "";
   };
 
+  const getStatus = (budget: Budget): Status => {
+    if (budget.amount === budget.maxAmount) {
+      return "finished";
+    } else if (
+      budget?.amount !== undefined &&
+      budget?.maxAmount !== undefined &&
+      budget?.amount > budget?.maxAmount
+    ) {
+      return "error";
+    }
+    return "active";
+  };
+
   return (
     <>
-      <CategoryModal
+      <ExpenseModal
         open={open}
         onCancel={() => setOpen(false)}
-        onAdd={(category) => addCategory(category)}
+        budgets={budgets}
+        onSave={() => {
+          setOpen(false);
+          fetchData();
+        }}
       />
 
       <Content>
         <Grid narrow>
-          <Column lg={8} md={4} sm={2}>
+          <Column sm={4}>
+            <Button
+              renderIcon={Add}
+              kind="primary"
+              onClick={() => setOpen(true)}
+            >
+              Add Expense
+            </Button>
+          </Column>
+          <Column lg={8} md={4} sm={2} className="mt-5">
             <Dropdown
               id="month"
               titleText="Month"
@@ -89,7 +114,7 @@ function App() {
               }}
             />
           </Column>
-          <Column lg={8} md={4} sm={2}>
+          <Column lg={8} md={4} sm={2} className="mt-5">
             <Dropdown
               id="year"
               titleText="Year"
@@ -115,16 +140,12 @@ function App() {
                   label={getCategory(budget?.categoryId)}
                   max={budget.maxAmount}
                   value={budget.amount || 0}
+                  status={getStatus(budget)}
                 />
               </Column>
             ))
           )}
         </Grid>
-        <Section className="mt-5">
-          <Button renderIcon={Add} kind="primary">
-            Add Expense
-          </Button>
-        </Section>
       </Content>
     </>
   );

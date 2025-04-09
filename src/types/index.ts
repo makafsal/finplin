@@ -19,7 +19,16 @@ export interface CategoryModalProps {
   category?: Category;
 }
 
+export interface ExpenseModalProps {
+  open?: boolean;
+  onCancel?: () => void;
+  onSave?: (item?: any) => void;
+  budgets?: Budget[];
+}
+
 export interface DropdownItem {
   text: string;
   value: number;
 }
+
+export type Status = "active" | "finished" | "error";
