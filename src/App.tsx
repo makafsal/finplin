@@ -84,6 +84,16 @@ function App() {
     return "active";
   };
 
+  const getHelperText = (budget: Budget) => {
+    const _string = `${budget.amount || 0}/${budget.maxAmount}`;
+
+    if (budget.amount !== undefined && budget.maxAmount !== undefined) {
+      return `${_string} (Balance: ${budget.maxAmount - budget.amount})`;
+    }
+
+    return _string;
+  };
+
   return (
     <>
       <ExpenseModal
@@ -98,7 +108,23 @@ function App() {
 
       <Content>
         <Grid narrow>
-          <Column sm={2}>
+          <Column sm={4}>
+            <ProgressBar
+              helperText={getHelperText({
+                amount: totalExpense,
+                maxAmount: totalBudget
+              })}
+              label="Total"
+              max={totalBudget}
+              value={totalExpense || 0}
+              status={getStatus({
+                amount: totalExpense,
+                maxAmount: totalBudget
+              })}
+              className="text-align-right"
+            />
+          </Column>
+          <Column sm={4} className="mt-5">
             <Button
               renderIcon={Add}
               kind="primary"
@@ -106,15 +132,6 @@ function App() {
             >
               Add Expense
             </Button>
-          </Column>
-          <Column sm={2} className="align-content-center text-align-right">
-            <h4
-              style={{
-                color: totalExpense > totalBudget ? "red" : "inherit"
-              }}
-            >
-              ₹{totalExpense} / ₹{totalBudget}
-            </h4>
           </Column>
           <Column lg={8} md={4} sm={2} className="mt-5">
             <Dropdown
@@ -150,13 +167,14 @@ function App() {
             <Column sm={4}>No budget allocated for this month.</Column>
           ) : (
             budgets?.map((budget) => (
-              <Column sm={4} className="mt-5">
+              <Column sm={4} className="mt-5 text-align-right">
                 <ProgressBar
-                  helperText={`${budget.amount || 0}/${budget.maxAmount}`}
+                  helperText={getHelperText(budget)}
                   label={getCategory(budget?.categoryId)}
                   max={budget.maxAmount}
                   value={budget.amount || 0}
                   status={getStatus(budget)}
+                  size="small"
                 />
               </Column>
             ))
