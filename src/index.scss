@@ -1,6 +1,10 @@
 @use "@carbon/react";
 @use "@carbon/layout";
 
+body {
+  overflow: hidden;
+}
+
 .mt-5 {
   margin-top: layout.$spacing-05;
 }
