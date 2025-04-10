@@ -54,6 +54,6 @@ Tap “Add” → the icon appears on your home screen.
 
 ## Sreenshots
 
-![IMG_4177](https://github.com/user-attachments/assets/8f155b5b-cbc4-4a50-a5e2-581c39f37ab0)
-![IMG_4176](https://github.com/user-attachments/assets/ab432773-3581-4352-937b-a4a94d5524bf)
-![IMG_4175](https://github.com/user-attachments/assets/a5645081-c5a2-489f-8904-0e8c7b13c74c)
+<img src="https://github.com/user-attachments/assets/94f938dd-b569-4d73-ab74-7c85cb602fb7" width="400" />
+
+<img src="https://github.com/user-attachments/assets/ab432773-3581-4352-937b-a4a94d5524bf" width="400" />
