@@ -72,7 +72,7 @@ function App() {
   };
 
   const getStatus = (budget: Budget): Status => {
-    if (budget.amount === budget.maxAmount) {
+    if (budget.maxAmount !== 0 && budget.amount === budget.maxAmount) {
       return "finished";
     } else if (
       budget?.amount !== undefined &&
@@ -108,7 +108,7 @@ function App() {
 
       <Content>
         <Grid narrow>
-          <Column sm={4}>
+          <Column lg={16} md={8} sm={4}>
             <ProgressBar
               helperText={getHelperText({
                 amount: totalExpense,
@@ -124,7 +124,7 @@ function App() {
               className="text-align-right"
             />
           </Column>
-          <Column sm={4} className="mt-5">
+          <Column lg={16} md={8} sm={4} className="mt-5">
             <Button
               renderIcon={Add}
               kind="primary"
@@ -167,7 +167,7 @@ function App() {
             <Column sm={4}>No budget allocated for this month.</Column>
           ) : (
             budgets?.map((budget) => (
-              <Column sm={4} className="mt-5 text-align-right">
+              <Column lg={16} md={8} sm={4} className="mt-5 text-align-right">
                 <ProgressBar
                   helperText={getHelperText(budget)}
                   label={getCategory(budget?.categoryId)}
