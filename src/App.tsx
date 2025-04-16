@@ -55,6 +55,9 @@ function App() {
         setCategories(_categories);
       }
     } catch (error) {
+      setTotalBudget(0);
+      setTotalExpense(0);
+      setBudgets([]);
       setCategories([]);
     }
   };
@@ -72,7 +75,7 @@ function App() {
   };
 
   const getStatus = (budget: Budget): Status => {
-    if (budget.maxAmount !== 0 && budget.amount === budget.maxAmount) {
+    if (budget.amount === budget.maxAmount) {
       return "finished";
     } else if (
       budget?.amount !== undefined &&
@@ -116,7 +119,7 @@ function App() {
               })}
               label="Total"
               max={totalBudget}
-              value={totalExpense || 0}
+              value={totalExpense}
               status={getStatus({
                 amount: totalExpense,
                 maxAmount: totalBudget
