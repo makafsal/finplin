@@ -8,7 +8,7 @@ import {
   OverflowMenuItem,
   ProgressBar
 } from "@carbon/react";
-import { Add, Filter } from "@carbon/react/icons";
+import { Add, SortAscending } from "@carbon/react/icons";
 import { useEffect, useState } from "react";
 import _ from "lodash";
 import { db } from "./db";
@@ -184,7 +184,7 @@ function App() {
                   fetchData(selectedMonth, selectedItem);
                 }}
               />
-              <OverflowMenu renderIcon={Filter} flipped={true}>
+              <OverflowMenu renderIcon={SortAscending} flipped={true} iconDescription="Sort">
                 <OverflowMenuItem
                   itemText="Balance asc"
                   onClick={() => sortByBalance("asc")}
