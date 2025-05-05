@@ -101,7 +101,11 @@ function App() {
   };
 
   const sortByBalance = (dir: "asc" | "desc") => {
-    const _sortedBudgets = _.orderBy(budgets, ["amount"], dir);
+    const _sortedBudgets = _.orderBy(
+      budgets,
+      [(b) => (b?.maxAmount || 0) - (b?.amount || 0)],
+      dir
+    );
 
     setBudgets(_sortedBudgets);
   };
