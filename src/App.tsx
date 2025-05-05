@@ -1,18 +1,21 @@
-import "./App.scss";
 import {
   Button,
   Column,
   Content,
   Dropdown,
   Grid,
+  OverflowMenu,
+  OverflowMenuItem,
   ProgressBar
 } from "@carbon/react";
-import { Add } from "@carbon/react/icons";
+import { Add, Filter } from "@carbon/react/icons";
 import { useEffect, useState } from "react";
+import _ from "lodash";
 import { db } from "./db";
 import { Budget, Category, DropdownItem, Status } from "./types";
 import { months, years } from "./constants";
 import { ExpenseModal } from "./components/ExpenseModal";
+import "./App.scss";
 
 function App() {
   const [open, setOpen] = useState(false);
@@ -97,6 +100,12 @@ function App() {
     return _string;
   };
 
+  const sortByBalance = (dir: "asc" | "desc") => {
+    const _sortedBudgets = _.orderBy(budgets, ["amount"], dir);
+
+    setBudgets(_sortedBudgets);
+  };
+
   return (
     <>
       <ExpenseModal
@@ -151,18 +160,31 @@ function App() {
             />
           </Column>
           <Column lg={8} md={4} sm={2} className="mt-5">
-            <Dropdown
-              id="year"
-              titleText="Year"
-              label="Select year"
-              items={years}
-              itemToString={(item) => (item ? item.text : "")}
-              selectedItem={selectedYear}
-              onChange={({ selectedItem }) => {
-                setSelectedYear(selectedItem);
-                fetchData(selectedMonth, selectedItem);
-              }}
-            />
+            <div className="filtersHolder">
+              <Dropdown
+                id="year"
+                titleText="Year"
+                label="Select year"
+                items={years}
+                className="flex-grow-1"
+                itemToString={(item) => (item ? item.text : "")}
+                selectedItem={selectedYear}
+                onChange={({ selectedItem }) => {
+                  setSelectedYear(selectedItem);
+                  fetchData(selectedMonth, selectedItem);
+                }}
+              />
+              <OverflowMenu renderIcon={Filter} flipped={true}>
+                <OverflowMenuItem
+                  itemText="Balance asc"
+                  onClick={() => sortByBalance("asc")}
+                />
+                <OverflowMenuItem
+                  itemText="Balance dec"
+                  onClick={() => sortByBalance("desc")}
+                />
+              </OverflowMenu>
+            </div>
           </Column>
         </Grid>
         <Grid className="mt-5" narrow>
