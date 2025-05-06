@@ -32,3 +32,9 @@ export interface DropdownItem {
 }
 
 export type Status = "active" | "finished" | "error";
+
+export interface LogItem {
+  id?: number;
+  time: Date;
+  message: string;
+}

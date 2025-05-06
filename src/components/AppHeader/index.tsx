@@ -44,6 +44,12 @@ export const AppHeader = () => {
               >
                 Categories
               </HeaderMenuItem>
+              <HeaderMenuItem
+                href="/logs"
+                isActive={location.pathname === "/logs"}
+              >
+                Logs
+              </HeaderMenuItem>
             </HeaderNavigation>
             <SideNav
               aria-label="Side navigation"
@@ -69,6 +75,12 @@ export const AppHeader = () => {
                     isActive={location.pathname === "/categories"}
                   >
                     Categories
+                  </HeaderMenuItem>
+                  <HeaderMenuItem
+                    href="/logs"
+                    isActive={location.pathname === "/logs"}
+                  >
+                    Logs
                   </HeaderMenuItem>
                 </HeaderSideNavItems>
               </SideNavItems>

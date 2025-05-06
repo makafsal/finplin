@@ -46,6 +46,11 @@ export const ExpenseModal = ({
       amount: (selectedBudget?.amount || 0) + Number(amount)
     });
 
+    await db.logs.add({
+      time: new Date(),
+      message: `added expense ${amount} to ${categoryItem?.text}`
+    });
+
     setSelectedBudget(undefined);
     setCategoryItem(null);
     setAmount("");

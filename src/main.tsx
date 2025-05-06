@@ -8,6 +8,7 @@ import { AppHeader } from "./components/AppHeader";
 import { BudgetAllocation } from "./components/BudgetAllocation";
 import { NotFound } from "./components/NotFound";
 import { Theme } from "@carbon/react";
+import { Logs } from "./components/LogsPage";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -18,6 +19,7 @@ createRoot(document.getElementById("root")!).render(
           <Route path="/" element={<App />} />
           <Route path="/categories" element={<Categories />} />
           <Route path="/budget" element={<BudgetAllocation />} />
+          <Route path="/logs" element={<Logs />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Theme>

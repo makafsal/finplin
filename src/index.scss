@@ -5,8 +5,16 @@ body {
   overflow: hidden;
 }
 
+.mt-3 {
+  margin-top: layout.$spacing-03;
+}
+
 .mt-5 {
   margin-top: layout.$spacing-05;
+}
+
+.pb-5 {
+  padding-bottom: layout.$spacing-05;
 }
 
 .align-content-center {
