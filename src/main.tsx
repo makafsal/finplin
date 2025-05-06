@@ -8,7 +8,7 @@ import { AppHeader } from "./components/AppHeader";
 import { BudgetAllocation } from "./components/BudgetAllocation";
 import { NotFound } from "./components/NotFound";
 import { Theme } from "@carbon/react";
-import { Logs } from "./components/Logs";
+import { Logs } from "./components/LogsPage";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
